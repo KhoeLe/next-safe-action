@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1715238661553,
+      "tag": "0000_plain_old_lace",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1715593430663,
+      "tag": "0001_tense_human_torch",
+      "breakpoints": true
+    }
+  ]
+}
