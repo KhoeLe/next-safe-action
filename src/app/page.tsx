@@ -1,5 +1,6 @@
 import { ComboboxDemo } from "@/components/combobox-demo";
 import LoginForm from "@/components/login-form";
+import MyComponent from "@/components/test";
 import { Button } from "@/components/ui/button";
 import { HomeIcon, ItalicIcon, OrbitIcon } from "lucide-react";
 import Link from "next/link";
@@ -32,6 +33,7 @@ export default function Home() {
 
         <LoginForm />
 
+        <MyComponent />
       </div>
 
 

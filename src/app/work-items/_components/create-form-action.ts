@@ -18,6 +18,7 @@ const formDataSchema = z.object({
   priority: z.enum(["low", "normal", "high"]),
   type: z.enum(["bug", "feature", "task"]),
   description: z.string().min(8),
+  file: z.instanceof(File)
 });
 
 const updateFormSchema = formDataSchema.extend({
@@ -30,7 +31,7 @@ const deleteFormSchema = z.object({
 
 export const createForm = action(
   formDataSchema,
-  async ({ title, status, assignee, priority, type, description }) => {
+  async ({ title, status, assignee, priority, type, description, file }) => {
     try {
       const createData = {
         title,
@@ -42,13 +43,17 @@ export const createForm = action(
         updatedAt: null,
         workItemsStatus: "active" as const,
         workItemsStatusAtTime: null, // Add this line
+        file: file,
       };
 
-      const newWorkItem = await createWorkItem(createData);
+      console.log(createData)
+
+
+      // const newWorkItem = await createWorkItem(createData);
 
       revalidatePath("/work-items");
 
-      return newWorkItem;
+      // return newWorkItem;
     } catch (error) {
       console.error(error);
       throw new Error("An error occurred while creation the work item");

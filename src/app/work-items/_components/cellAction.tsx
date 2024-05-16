@@ -9,12 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { WorkItem } from '@/db/schema';
-import usePreviewModalWorkItemStore from '@/store/workItem-store';
 import { Ellipsis, ShieldBan } from 'lucide-react';
 import { useAction } from 'next-safe-action/hooks';
 import { deleteForm } from './create-form-action';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { usePreviewModalWorkItemStore } from '@/store/workItem-store';
 
 type Props = {
   data: WorkItem
@@ -75,13 +75,11 @@ function CellAction({ data }: Props) {
 
           <DropdownMenuItem onClick={() => onCopy(data.id)}>Make a copy</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem   onClick={handleDelete}>
             <TooltipProvider delayDuration={200} >
               <Tooltip  >
-                <TooltipTrigger asChild>
-                  <Button size={'icon'} variant={'destructive'} onClick={handleDelete} >
-                    <ShieldBan className='h-4 w-4 ' />
-                  </Button>
+                <TooltipTrigger  >
+                  <ShieldBan className='h-6 w-6 rounded-md bg-destructive text-destructive-foreground hover:bg-destructive/90' />
                 </TooltipTrigger>
                 <TooltipContent side='bottom'>
                   <p className='text-sm font-light'>Inactive item</p>

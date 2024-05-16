@@ -9,6 +9,7 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
+    
 } from "@tanstack/react-table";
 import React, { useState } from "react";
 
@@ -39,13 +40,16 @@ function DataTable<TData, TValue>({
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
 
+        // multi row selection
+        enableMultiRowSelection: true,
+
         // sorting
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
 
         state: {
             columnFilters,
-            sorting
+            sorting,
         },
     });
 

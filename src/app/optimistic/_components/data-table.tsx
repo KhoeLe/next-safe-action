@@ -38,7 +38,6 @@ function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-
         // sorting
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),

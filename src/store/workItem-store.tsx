@@ -6,15 +6,15 @@ interface PreviewModalWorkItemState {
   selectedWorkItem : WorkItem | null,
   setSelectedWorkItem : (workItem: WorkItem) => void,
   setOpenSheet: (open: boolean) => void
-} 
+}
 
-const usePreviewModalWorkItemStore = create<PreviewModalWorkItemState>((set, get) => ({
+
+
+export const usePreviewModalWorkItemStore = create<PreviewModalWorkItemState>((set, get) => ({
   isOpen: false,
   selectedWorkItem: null,
   setOpenSheet: (open: boolean) => set({isOpen: open}),
   setSelectedWorkItem: (workItem: WorkItem) => set({selectedWorkItem: workItem})
   
 }))
-
-export default usePreviewModalWorkItemStore
 

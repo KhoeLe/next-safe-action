@@ -1,18 +1,16 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-// import { statuses } from "@/types/data-enum-status"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCheck, GitPullRequestClosed, Loader } from "lucide-react"
 import CellAction from "./cellAction"
 import { DataTableColumnHeader } from "./data-table-column-header"
-import Link from "next/link"
 import { WorkItem } from "@/db/schema"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import React from "react"
-import usePreviewModalWorkItemStore from "@/store/workItem-store"
+import React, { HTMLProps } from "react"
+import { usePreviewModalWorkItemStore } from "@/store/workItem-store"
 
 export const statuses = [
   {
@@ -56,15 +54,55 @@ const priorityVariantMap = {
 }
 
 
+function IndeterminateCheckbox({
+  indeterminate,
+  className = '',
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!)
+
+  React.useEffect(() => {
+    if (typeof indeterminate === 'boolean') {
+      ref.current.indeterminate = !rest.checked && indeterminate
+    }
+  }, [ref, indeterminate, rest.checked])
+
+  
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + ' cursor-pointer'}
+      {...rest}
+    />
+  )
+}
+
 
 
 export const columns: ColumnDef<WorkItem>[] = [
   {
     accessorKey: "id",
-    header: () => <Checkbox  />,
-    cell: ({ row }) => <div>
-      <Checkbox value={row.getValue('id')} />
-    </div>
+    header: () => <Checkbox />,
+    cell: ({ row }) => {
+
+
+      return (
+        <div className="px-1">
+        <IndeterminateCheckbox
+          {...{
+            checked: row.getIsSelected(),
+            disabled: !row.getCanSelect(),
+            indeterminate: row.getIsSomeSelected(),
+            onChange: row.getToggleSelectedHandler(),
+          }}
+        />
+      </div>
+      )
+    }
+
+
+
   },
   {
     accessorKey: "title",
@@ -196,6 +234,6 @@ export const columns: ColumnDef<WorkItem>[] = [
   {
     accessorKey: "Actions",
     id: "actions",
-    cell: ({row}) => <CellAction  data = {row.original}/>
+    cell: ({ row }) => <CellAction data={row.original} />
   }
 ]

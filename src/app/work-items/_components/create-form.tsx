@@ -16,7 +16,7 @@ import { toast } from 'sonner'
 
 interface Props {
   openSheet: boolean,
-  workItems: WorkItem[]
+  // workItems: WorkItem[]
   initialValues?: WorkItem | null | undefined,
   setOpenSheet: (open: boolean) => void
 
@@ -25,6 +25,15 @@ interface Props {
 
 function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
   const ref = useRef<HTMLFormElement>(null);
+
+  const [file, setFile] = React.useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(event.target.files ? event.target.files[0] : null);
+  };
+
 
   const extractFormData = (e: React.FormEvent<HTMLFormElement>, initialValues?: WorkItem | null) => {
     const formData = new FormData(e.target as HTMLFormElement);
@@ -36,7 +45,8 @@ function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
       status: getValue('status', 'to do') as "to do" | "in process" | "done",
       priority: getValue('priority', 'normal') as "high" | "low" | "normal",
       type: getValue('type', 'task') as "bug" | "feature" | "task",
-      description: getValue('description', '')
+      description: getValue('description', ''),
+      file: file
     };
   }
 
@@ -95,12 +105,15 @@ function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
 
     const formData = extractFormData(e, initialValues);
 
-    if (initialValues?.id) {
-      updateWorkItem({ ...formData, id: initialValues.id });
-    } else {
-      createWorkItem(formData);
-    }
-  };
+    console.log(formData)
+    createWorkItem({ ...formData, file: formData.file ?? new File([], '') });
+
+    // if (initialValues?.id) {
+    //   updateWorkItem({ ...formData, id: initialValues.id });
+    // } else {
+    //   createWorkItem({ ...formData, file: formData.file ?? new File([], '') });
+    // }
+  }
 
 
   const handleDelete = async (id: string) => {
@@ -271,6 +284,20 @@ function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
             <div className='space-y-2'>
               <Label htmlFor="description">Description</Label>
               <Textarea name='description' placeholder="Type your message here." defaultValue={initialValues?.description} />
+              {
+                (statusUpdate === 'hasErrored' || statusCreate === 'hasErrored') && (
+                  <div className='text-red-500 text-sm'>
+                    {resultCreate.validationErrors?.description}
+                    {resultUpdate.validationErrors?.description}
+                  </div>
+                )
+
+              }
+            </div>
+
+            <div className='space-y-2'>
+              <Label htmlFor="file">Upload File</Label>
+              <Input type="file" ref={fileInputRef} onChange={handleFileChange} />
               {
                 (statusUpdate === 'hasErrored' || statusCreate === 'hasErrored') && (
                   <div className='text-red-500 text-sm'>
