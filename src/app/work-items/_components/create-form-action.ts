@@ -18,7 +18,8 @@ const formDataSchema = z.object({
   priority: z.enum(["low", "normal", "high"]),
   type: z.enum(["bug", "feature", "task"]),
   description: z.string().min(8),
-  file: z.instanceof(File)
+  // file: z.instanceof(File)
+  file: z.string().optional(),
 });
 
 const updateFormSchema = formDataSchema.extend({
@@ -31,7 +32,7 @@ const deleteFormSchema = z.object({
 
 export const createForm = action(
   formDataSchema,
-  async ({ title, status, assignee, priority, type, description, file }) => {
+  async ({ title, status, assignee, priority, type, description , file }) => {
     try {
       const createData = {
         title,
@@ -43,7 +44,8 @@ export const createForm = action(
         updatedAt: null,
         workItemsStatus: "active" as const,
         workItemsStatusAtTime: null, // Add this line
-        file: file,
+        // file: file,
+        file: file ? file : null,
       };
 
       console.log(createData)

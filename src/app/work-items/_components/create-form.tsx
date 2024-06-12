@@ -46,7 +46,7 @@ function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
       priority: getValue('priority', 'normal') as "high" | "low" | "normal",
       type: getValue('type', 'task') as "bug" | "feature" | "task",
       description: getValue('description', ''),
-      file: file
+      file: file?.type
     };
   }
 
@@ -106,7 +106,7 @@ function CreateForm({ openSheet, setOpenSheet, initialValues }: Props) {
     const formData = extractFormData(e, initialValues);
 
     console.log(formData)
-    createWorkItem({ ...formData, file: formData.file ?? new File([], '') });
+    createWorkItem({ ...formData});
 
     // if (initialValues?.id) {
     //   updateWorkItem({ ...formData, id: initialValues.id });
